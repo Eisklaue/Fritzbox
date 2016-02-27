@@ -12,8 +12,8 @@ namespace Fritzbox
     {
         static void Main(string[] args)
         {
-            string username = "SmartHomeToolUser";
-            string password = "Eisklaue23#";
+            string username = "XXX";
+            string password = "XXX";
 
             login log = new login(username,password);
 
