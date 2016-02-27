@@ -46,6 +46,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\login.cs" />
+    <Compile Include="src\xmlhandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

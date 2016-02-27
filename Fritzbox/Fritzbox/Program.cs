@@ -12,12 +12,26 @@ namespace Fritzbox
     {
         static void Main(string[] args)
         {
-            string username = "XXX";
-            string password = "XXX";
+            string input;
 
-            login log = new login(username,password);
+            XMLHandler xHandler = new XMLHandler();
 
-            string sid = log.GetSessionId();
+            if (xHandler.username == "")
+            {
+                Console.WriteLine("Please enter Username: ");
+                input = Console.ReadLine();
+                xHandler.SetValues("Username", input);
+            }
+
+            if (xHandler.password == "")
+            {
+                Console.WriteLine("Please enter Password: ");
+                input = Console.ReadLine();
+                xHandler.SetValues("Password", input);
+            }
+            login log = new login(xHandler.username,xHandler.password);
+            xHandler.SetValues("Sid", log.sid);
+            
         }
     }
 }

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Security.Cryptography;
 using System.Xml.Linq;
-using System.IO;
 
 namespace Fritzbox.src
 {
@@ -14,32 +8,34 @@ namespace Fritzbox.src
     {
         private string username;
         private string password;
+        public string sid;
 
         public login (string username, string password)
         {
             this.password = password;
             this.username = username;
+            this.sid = GetSessionId();
         }
-        public string GetSessionId()
+        private string GetSessionId()
         {
             XDocument doc = XDocument.Load(@"http://fritz.box/login_sid.lua");
-            string sid = GetValue(doc, "SID");
-            if (sid == "0000000000000000")
+            this.sid = GetValue(doc, "SID");
+            if (this.sid == "0000000000000000")
             {
                 string challenge = GetValue(doc, "Challenge");
                 string uri = @"http://fritz.box/login_sid.lua?username=" +
                this.username + @"&response=" + GetResponse(challenge);
                 doc = XDocument.Load(uri);
-                sid = GetValue(doc, "SID");
+                this.sid = GetValue(doc, "SID");
             }
-            return sid;
+            return this.sid;
         }
-        public string GetResponse(string challenge)
+        private string GetResponse(string challenge)
         {
             return challenge + "-" + GetMD5Hash(challenge + "-" + this.password);
         }
 
-        public string GetMD5Hash(string input)
+        private string GetMD5Hash(string input)
         {
             MD5 md5Hasher = MD5.Create();
 
@@ -61,10 +57,15 @@ namespace Fritzbox.src
             return sBuilder.ToString();
         }
 
-        public string GetValue(XDocument doc, string name)
+        private string GetValue(XDocument doc, string name)
         {
             XElement info = doc.FirstNode as XElement;
             return info.Element(name).Value;
+        }
+
+        public string getSid()
+        {
+            return this.sid;
         }
 
     }
