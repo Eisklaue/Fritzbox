@@ -4,13 +4,13 @@ using System.Xml.Linq;
 
 namespace Fritzbox.src
 {
-    class login
+    class Login
     {
         private string username;
         private string password;
         public string sid;
 
-        public login (string username, string password)
+        public Login (string username, string password)
         {
             this.password = password;
             this.username = username;

@@ -13,6 +13,7 @@ namespace Fritzbox
         static void Main(string[] args)
         {
             string input;
+            string[] separator = { "," };
 
             XMLHandler xHandler = new XMLHandler();
 
@@ -29,8 +30,17 @@ namespace Fritzbox
                 input = Console.ReadLine();
                 xHandler.SetValues("Password", input);
             }
-            login log = new login(xHandler.username,xHandler.password);
+            Login log = new Login(xHandler.username,xHandler.password);
             xHandler.SetValues("Sid", log.sid);
+
+            SwitchState sState = new SwitchState(xHandler.username, xHandler.sid);
+
+            string[] ains = sState.GetSwitchList().Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string ain in ains)
+            {
+                Console.WriteLine("Ain: " + ain + " mW: " + sState.GetSwitchPower(ain));
+            }
             
         }
     }
